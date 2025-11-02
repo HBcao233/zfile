@@ -18,33 +18,29 @@ import org.springframework.stereotype.Service;
 @Order(2)
 public class TwoFactorAuthLoginVerifyService implements LoginVerifyService {
 
-    @Resource
-    private TwoFactorAuthenticatorVerifyService twoFactorAuthVerifyService;
+  @Resource private TwoFactorAuthenticatorVerifyService twoFactorAuthVerifyService;
 
-    @Resource
-    private SystemConfigService systemConfigService;
+  @Resource private SystemConfigService systemConfigService;
 
-    @Resource
-    private UserService userService;
+  @Resource private UserService userService;
 
-    @Override
-    public void verify(UserLoginRequest userLoginRequest) {
-        // 如果不是管理员, 则不需要进行二次验证
-        if (!userService.isAdmin(userLoginRequest.getUsername())) {
-            return;
-        }
-
-        // 判断是否开启管理员二次验证
-        SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
-        boolean disable2FA = BooleanUtils.isNotTrue(systemConfig.getAdminTwoFactorVerify());
-        boolean empty2FASecret = StringUtils.isBlank(systemConfig.getLoginVerifySecret());
-        if (disable2FA || empty2FASecret) {
-            return;
-        }
-
-        String loginVerifySecret = systemConfig.getLoginVerifySecret();
-        String verifyCode = userLoginRequest.getVerifyCode();
-        twoFactorAuthVerifyService.checkCode(loginVerifySecret, verifyCode);
+  @Override
+  public void verify(UserLoginRequest userLoginRequest) {
+    // 如果不是管理员, 则不需要进行二次验证
+    if (!userService.isAdmin(userLoginRequest.getUsername())) {
+      return;
     }
 
+    // 判断是否开启管理员二次验证
+    SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
+    boolean disable2FA = BooleanUtils.isNotTrue(systemConfig.getAdminTwoFactorVerify());
+    boolean empty2FASecret = StringUtils.isBlank(systemConfig.getLoginVerifySecret());
+    if (disable2FA || empty2FASecret) {
+      return;
+    }
+
+    String loginVerifySecret = systemConfig.getLoginVerifySecret();
+    String verifyCode = userLoginRequest.getVerifyCode();
+    twoFactorAuthVerifyService.checkCode(loginVerifySecret, verifyCode);
+  }
 }

@@ -7,11 +7,11 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 public class FtpClientPool extends GenericObjectPool<Ftp> {
 
-    public FtpClientPool(PooledObjectFactory<Ftp> factory) {
-        super(factory);
-    }
+  public FtpClientPool(PooledObjectFactory<Ftp> factory) {
+    super(factory);
+  }
 
-    public FtpClientPool(PooledObjectFactory<Ftp> factory, GenericObjectPoolConfig config) {
-        super(factory, config);
-    }
+  public FtpClientPool(PooledObjectFactory<Ftp> factory, GenericObjectPoolConfig config) {
+    super(factory, config);
+  }
 }

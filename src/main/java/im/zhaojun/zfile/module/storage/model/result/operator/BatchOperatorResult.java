@@ -10,29 +10,28 @@ import lombok.Data;
 @Data
 public class BatchOperatorResult {
 
-    private String name;
+  private String name;
 
-    private String path;
+  private String path;
 
-    private boolean success;
+  private boolean success;
 
-    private String message;
+  private String message;
 
-    public static BatchOperatorResult success(String name, String path) {
-        BatchOperatorResult batchOperatorResult = new BatchOperatorResult();
-        batchOperatorResult.setSuccess(true);
-        batchOperatorResult.setName(name);
-        batchOperatorResult.setPath(path);
-        return batchOperatorResult;
-    }
+  public static BatchOperatorResult success(String name, String path) {
+    BatchOperatorResult batchOperatorResult = new BatchOperatorResult();
+    batchOperatorResult.setSuccess(true);
+    batchOperatorResult.setName(name);
+    batchOperatorResult.setPath(path);
+    return batchOperatorResult;
+  }
 
-    public static BatchOperatorResult fail(String name, String path, String message) {
-        BatchOperatorResult batchOperatorResult = new BatchOperatorResult();
-        batchOperatorResult.setSuccess(false);
-        batchOperatorResult.setName(name);
-        batchOperatorResult.setPath(path);
-        batchOperatorResult.setMessage(message);
-        return batchOperatorResult;
-    }
-
+  public static BatchOperatorResult fail(String name, String path, String message) {
+    BatchOperatorResult batchOperatorResult = new BatchOperatorResult();
+    batchOperatorResult.setSuccess(false);
+    batchOperatorResult.setName(name);
+    batchOperatorResult.setPath(path);
+    batchOperatorResult.setMessage(message);
+    return batchOperatorResult;
+  }
 }

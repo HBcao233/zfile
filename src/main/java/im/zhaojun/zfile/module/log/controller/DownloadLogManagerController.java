@@ -25,14 +25,13 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 直链下载日志接口
@@ -45,109 +44,177 @@ import java.util.stream.Stream;
 @RequestMapping("/admin/download/log")
 public class DownloadLogManagerController {
 
-    @Resource
-    private StorageSourceService storageSourceService;
+  @Resource private StorageSourceService storageSourceService;
 
-    @Resource
-    private DownloadLogConvert downloadLogConvert;
+  @Resource private DownloadLogConvert downloadLogConvert;
 
-    @Resource
-    private DownloadLogService downloadLogService;
+  @Resource private DownloadLogService downloadLogService;
 
-    @Resource
-    private SystemConfigService systemConfigService;
+  @Resource private SystemConfigService systemConfigService;
 
-    @ApiOperationSupport(order = 1)
-    @GetMapping("/list")
-    @Operation(summary = "直链下载日志")
-    @ResponseBody
-    public AjaxJson<Stream<DownloadLogResult>> list(QueryDownloadLogRequest queryDownloadLogRequest) {
-        // 分页和排序
-        boolean asc = Objects.equals(queryDownloadLogRequest.getOrderDirection(), "asc");
-        OrderItem orderItem = asc ? OrderItem.asc(queryDownloadLogRequest.getOrderBy()) : OrderItem.desc(queryDownloadLogRequest.getOrderBy());
-        Page<DownloadLog> pages = new Page<DownloadLog>(queryDownloadLogRequest.getPage(), queryDownloadLogRequest.getLimit())
-                .addOrder(orderItem);
+  @ApiOperationSupport(order = 1)
+  @GetMapping("/list")
+  @Operation(summary = "直链下载日志")
+  @ResponseBody
+  public AjaxJson<Stream<DownloadLogResult>> list(QueryDownloadLogRequest queryDownloadLogRequest) {
+    // 分页和排序
+    boolean asc = Objects.equals(queryDownloadLogRequest.getOrderDirection(), "asc");
+    OrderItem orderItem =
+        asc
+            ? OrderItem.asc(queryDownloadLogRequest.getOrderBy())
+            : OrderItem.desc(queryDownloadLogRequest.getOrderBy());
+    Page<DownloadLog> pages =
+        new Page<DownloadLog>(queryDownloadLogRequest.getPage(), queryDownloadLogRequest.getLimit())
+            .addOrder(orderItem);
 
-        LambdaQueryWrapper<DownloadLog> queryWrapper = new LambdaQueryWrapper<DownloadLog>()
-                .eq(StringUtils.isNotEmpty(queryDownloadLogRequest.getStorageKey()), DownloadLog::getStorageKey, queryDownloadLogRequest.getStorageKey())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getPath()), DownloadLog::getPath, queryDownloadLogRequest.getPath())
-                .isNotNull("shortLink".equals(queryDownloadLogRequest.getLinkType()), DownloadLog::getShortKey)
-                .isNull("directLink".equals(queryDownloadLogRequest.getLinkType()), DownloadLog::getShortKey)
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getShortKey()), DownloadLog::getShortKey, queryDownloadLogRequest.getShortKey())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getIp()), DownloadLog::getIp, queryDownloadLogRequest.getIp())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getReferer()), DownloadLog::getReferer, queryDownloadLogRequest.getReferer())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getUserAgent()), DownloadLog::getUserAgent, queryDownloadLogRequest.getUserAgent())
-                .ge(ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateFrom()), DownloadLog::getCreateTime, queryDownloadLogRequest.getDateFrom())
-                .le(ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateTo()), DownloadLog::getCreateTime, queryDownloadLogRequest.getDateTo());
+    LambdaQueryWrapper<DownloadLog> queryWrapper =
+        new LambdaQueryWrapper<DownloadLog>()
+            .eq(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getStorageKey()),
+                DownloadLog::getStorageKey,
+                queryDownloadLogRequest.getStorageKey())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getPath()),
+                DownloadLog::getPath,
+                queryDownloadLogRequest.getPath())
+            .isNotNull(
+                "shortLink".equals(queryDownloadLogRequest.getLinkType()), DownloadLog::getShortKey)
+            .isNull(
+                "directLink".equals(queryDownloadLogRequest.getLinkType()),
+                DownloadLog::getShortKey)
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getShortKey()),
+                DownloadLog::getShortKey,
+                queryDownloadLogRequest.getShortKey())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getIp()),
+                DownloadLog::getIp,
+                queryDownloadLogRequest.getIp())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getReferer()),
+                DownloadLog::getReferer,
+                queryDownloadLogRequest.getReferer())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getUserAgent()),
+                DownloadLog::getUserAgent,
+                queryDownloadLogRequest.getUserAgent())
+            .ge(
+                ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateFrom()),
+                DownloadLog::getCreateTime,
+                queryDownloadLogRequest.getDateFrom())
+            .le(
+                ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateTo()),
+                DownloadLog::getCreateTime,
+                queryDownloadLogRequest.getDateTo());
 
-        Page<DownloadLog> selectResult = downloadLogService.selectPage(pages, queryWrapper);
+    Page<DownloadLog> selectResult = downloadLogService.selectPage(pages, queryWrapper);
 
-        Map<String, StorageSource> cache = new HashMap<>();
+    Map<String, StorageSource> cache = new HashMap<>();
 
-        String serverAddress = systemConfigService.getAxiosFromDomainOrSetting();
-        SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
-        String directLinkPrefix = systemConfig.getDirectLinkPrefix();
+    String serverAddress = systemConfigService.getAxiosFromDomainOrSetting();
+    SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
+    String directLinkPrefix = systemConfig.getDirectLinkPrefix();
 
-        Stream<DownloadLogResult> shortLinkResultList = selectResult.getRecords().stream().map(model -> {
-            String storageKey = model.getStorageKey();
+    Stream<DownloadLogResult> shortLinkResultList =
+        selectResult.getRecords().stream()
+            .map(
+                model -> {
+                  String storageKey = model.getStorageKey();
 
-            StorageSource storageSource = cache.computeIfAbsent(storageKey, (key) -> storageSourceService.findByStorageKey(key));
-            DownloadLogResult downloadLogResult = downloadLogConvert.entityToResultList(model, storageSource);
+                  StorageSource storageSource =
+                      cache.computeIfAbsent(
+                          storageKey, (key) -> storageSourceService.findByStorageKey(key));
+                  DownloadLogResult downloadLogResult =
+                      downloadLogConvert.entityToResultList(model, storageSource);
 
-            if (StringUtils.isNotBlank(downloadLogResult.getShortKey())) {
-                downloadLogResult.setShortLink(StringUtils.concat(serverAddress, "s", downloadLogResult.getShortKey()));
-            } else {
-                downloadLogResult.setPathLink(StringUtils.concat(serverAddress, directLinkPrefix, downloadLogResult.getStorageKey(), downloadLogResult.getPath()));
-            }
+                  if (StringUtils.isNotBlank(downloadLogResult.getShortKey())) {
+                    downloadLogResult.setShortLink(
+                        StringUtils.concat(serverAddress, "s", downloadLogResult.getShortKey()));
+                  } else {
+                    downloadLogResult.setPathLink(
+                        StringUtils.concat(
+                            serverAddress,
+                            directLinkPrefix,
+                            downloadLogResult.getStorageKey(),
+                            downloadLogResult.getPath()));
+                  }
 
-            return downloadLogResult;
-        });
-        return AjaxJson.getPageData(selectResult.getTotal(), shortLinkResultList);
-    }
+                  return downloadLogResult;
+                });
+    return AjaxJson.getPageData(selectResult.getTotal(), shortLinkResultList);
+  }
 
+  @ApiOperationSupport(order = 2)
+  @DeleteMapping("/delete/{id}")
+  @Operation(summary = "删除直链")
+  @Parameter(
+      in = ParameterIn.PATH,
+      name = "id",
+      description = "直链 id",
+      required = true,
+      schema = @Schema(type = "integer"))
+  @ResponseBody
+  @DemoDisable
+  public AjaxJson<Void> deleteById(@PathVariable Integer id) {
+    downloadLogService.removeById(id);
+    return AjaxJson.getSuccess();
+  }
 
-    @ApiOperationSupport(order = 2)
-    @DeleteMapping("/delete/{id}")
-    @Operation(summary = "删除直链")
-    @Parameter(in = ParameterIn.PATH, name = "id", description = "直链 id", required = true, schema = @Schema(type = "integer"))
-    @ResponseBody
-    @DemoDisable
-    public AjaxJson<Void> deleteById(@PathVariable Integer id) {
-        downloadLogService.removeById(id);
-        return AjaxJson.getSuccess();
-    }
+  @ApiOperationSupport(order = 3)
+  @PostMapping("/delete/batch")
+  @ResponseBody
+  @Operation(summary = "批量删除直链")
+  @DemoDisable
+  public AjaxJson<Void> batchDelete(@RequestBody BatchDeleteRequest batchDeleteRequest) {
+    List<Integer> ids = batchDeleteRequest.getIds();
+    downloadLogService.removeBatchByIds(ids);
+    return AjaxJson.getSuccess();
+  }
 
+  @ApiOperationSupport(order = 4)
+  @PostMapping("/delete/batch/query")
+  @ResponseBody
+  @Operation(summary = "根据查询条件批量删除直链")
+  @DemoDisable
+  public AjaxJson<Void> batchDeleteBySearchParams(
+      @RequestBody QueryDownloadLogRequest queryDownloadLogRequest) {
 
-    @ApiOperationSupport(order = 3)
-    @PostMapping("/delete/batch")
-    @ResponseBody
-    @Operation(summary = "批量删除直链")
-    @DemoDisable
-    public AjaxJson<Void> batchDelete(@RequestBody BatchDeleteRequest batchDeleteRequest) {
-        List<Integer> ids = batchDeleteRequest.getIds();
-        downloadLogService.removeBatchByIds(ids);
-        return AjaxJson.getSuccess();
-    }
+    LambdaQueryWrapper<DownloadLog> queryWrapper =
+        new LambdaQueryWrapper<DownloadLog>()
+            .eq(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getStorageKey()),
+                DownloadLog::getStorageKey,
+                queryDownloadLogRequest.getStorageKey())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getPath()),
+                DownloadLog::getPath,
+                queryDownloadLogRequest.getPath())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getShortKey()),
+                DownloadLog::getShortKey,
+                queryDownloadLogRequest.getShortKey())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getIp()),
+                DownloadLog::getIp,
+                queryDownloadLogRequest.getIp())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getReferer()),
+                DownloadLog::getReferer,
+                queryDownloadLogRequest.getReferer())
+            .like(
+                StringUtils.isNotEmpty(queryDownloadLogRequest.getUserAgent()),
+                DownloadLog::getUserAgent,
+                queryDownloadLogRequest.getUserAgent())
+            .ge(
+                ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateFrom()),
+                DownloadLog::getCreateTime,
+                queryDownloadLogRequest.getDateFrom())
+            .le(
+                ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateTo()),
+                DownloadLog::getCreateTime,
+                queryDownloadLogRequest.getDateTo());
 
-    @ApiOperationSupport(order = 4)
-    @PostMapping("/delete/batch/query")
-    @ResponseBody
-    @Operation(summary = "根据查询条件批量删除直链")
-    @DemoDisable
-    public AjaxJson<Void> batchDeleteBySearchParams(@RequestBody QueryDownloadLogRequest queryDownloadLogRequest) {
-
-        LambdaQueryWrapper<DownloadLog> queryWrapper = new LambdaQueryWrapper<DownloadLog>()
-                .eq(StringUtils.isNotEmpty(queryDownloadLogRequest.getStorageKey()), DownloadLog::getStorageKey, queryDownloadLogRequest.getStorageKey())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getPath()), DownloadLog::getPath, queryDownloadLogRequest.getPath())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getShortKey()), DownloadLog::getShortKey, queryDownloadLogRequest.getShortKey())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getIp()), DownloadLog::getIp, queryDownloadLogRequest.getIp())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getReferer()), DownloadLog::getReferer, queryDownloadLogRequest.getReferer())
-                .like(StringUtils.isNotEmpty(queryDownloadLogRequest.getUserAgent()), DownloadLog::getUserAgent, queryDownloadLogRequest.getUserAgent())
-                .ge(ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateFrom()), DownloadLog::getCreateTime, queryDownloadLogRequest.getDateFrom())
-                .le(ObjUtil.isNotEmpty(queryDownloadLogRequest.getDateTo()), DownloadLog::getCreateTime, queryDownloadLogRequest.getDateTo());
-
-        downloadLogService.deleteByQueryWrapper(queryWrapper);
-        return AjaxJson.getSuccess();
-    }
-
+    downloadLogService.deleteByQueryWrapper(queryWrapper);
+    return AjaxJson.getSuccess();
+  }
 }

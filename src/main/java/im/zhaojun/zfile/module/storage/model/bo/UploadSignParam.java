@@ -10,19 +10,12 @@ import lombok.Data;
 @Data
 public class UploadSignParam {
 
-	/**
-	 * 上传路径
-	 */
-	private String path;
+  /** 上传路径 */
+  private String path;
 
-	/**
-	 * 文件大小
-	 */
-	private Long size;
+  /** 文件大小 */
+  private Long size;
 
-	/**
-	 * 文件名
-	 */
-	private String name;
-
+  /** 文件名 */
+  private String name;
 }

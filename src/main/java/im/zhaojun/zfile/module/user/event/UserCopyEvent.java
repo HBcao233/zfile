@@ -10,13 +10,12 @@ import lombok.Data;
 @Data
 public class UserCopyEvent {
 
-    private Integer fromId;
+  private Integer fromId;
 
-    private Integer newId;
+  private Integer newId;
 
-    public UserCopyEvent(Integer fromId, Integer newId) {
-        this.fromId = fromId;
-        this.newId = newId;
-    }
-
+  public UserCopyEvent(Integer fromId, Integer newId) {
+    this.fromId = fromId;
+    this.newId = newId;
+  }
 }

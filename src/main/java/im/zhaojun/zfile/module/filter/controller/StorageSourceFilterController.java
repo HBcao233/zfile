@@ -12,9 +12,8 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 存储源过滤器维护接口
@@ -27,26 +26,34 @@ import java.util.List;
 @RequestMapping("/admin")
 public class StorageSourceFilterController {
 
-    @Resource
-    private FilterConfigService filterConfigService;
+  @Resource private FilterConfigService filterConfigService;
 
-    @ApiOperationSupport(order = 1)
-    @Operation(summary = "获取存储源过滤文件列表", description ="根据存储源 ID 获取存储源设置的过滤文件列表")
-    @Parameter(in = ParameterIn.PATH, name = "storageId", description = "存储源 id", required = true, schema = @Schema(type = "integer"))
-    @GetMapping("/storage/{storageId}/filters")
-    public AjaxJson<List<FilterConfig>> getFilters(@PathVariable Integer storageId) {
-        return AjaxJson.getSuccessData(filterConfigService.findByStorageId(storageId));
-    }
+  @ApiOperationSupport(order = 1)
+  @Operation(summary = "获取存储源过滤文件列表", description = "根据存储源 ID 获取存储源设置的过滤文件列表")
+  @Parameter(
+      in = ParameterIn.PATH,
+      name = "storageId",
+      description = "存储源 id",
+      required = true,
+      schema = @Schema(type = "integer"))
+  @GetMapping("/storage/{storageId}/filters")
+  public AjaxJson<List<FilterConfig>> getFilters(@PathVariable Integer storageId) {
+    return AjaxJson.getSuccessData(filterConfigService.findByStorageId(storageId));
+  }
 
-
-    @ApiOperationSupport(order = 2)
-    @Operation(summary = "保存存储源过滤文件列表", description ="保存指定存储源 ID 设置的过滤文件列表")
-    @Parameter(in = ParameterIn.PATH, name = "storageId", description = "存储源 id", required = true, schema = @Schema(type = "integer"))
-    @PostMapping("/storage/{storageId}/filters")
-    @DemoDisable
-    public AjaxJson<Void> saveFilters(@PathVariable Integer storageId, @RequestBody List<FilterConfig> filter) {
-        filterConfigService.batchSave(storageId, filter);
-        return AjaxJson.getSuccess();
-    }
-
+  @ApiOperationSupport(order = 2)
+  @Operation(summary = "保存存储源过滤文件列表", description = "保存指定存储源 ID 设置的过滤文件列表")
+  @Parameter(
+      in = ParameterIn.PATH,
+      name = "storageId",
+      description = "存储源 id",
+      required = true,
+      schema = @Schema(type = "integer"))
+  @PostMapping("/storage/{storageId}/filters")
+  @DemoDisable
+  public AjaxJson<Void> saveFilters(
+      @PathVariable Integer storageId, @RequestBody List<FilterConfig> filter) {
+    filterConfigService.batchSave(storageId, filter);
+    return AjaxJson.getSuccess();
+  }
 }

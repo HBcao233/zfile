@@ -14,23 +14,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FilterConfigHiddenModeEnum {
 
-	/**
-	 * 仅隐藏
-	 */
-	HIDDEN("hidden"),
+  /** 仅隐藏 */
+  HIDDEN("hidden"),
 
-	/**
-	 * 隐藏并不可访问 (针对目录)
-	 */
-	INACCESSIBLE("inaccessible"),
+  /** 隐藏并不可访问 (针对目录) */
+  INACCESSIBLE("inaccessible"),
 
-	/**
-	 * 隐藏并不可访问 (针对文件)
-	 */
-	DISABLE_DOWNLOAD("disable_download");
+  /** 隐藏并不可访问 (针对文件) */
+  DISABLE_DOWNLOAD("disable_download");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

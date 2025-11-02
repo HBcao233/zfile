@@ -14,23 +14,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SearchFolderModeEnum {
 
-	/**
-	 * 搜索当前文件夹
-	 */
-	SEARCH_CURRENT_FOLDER("search_current_folder"),
+  /** 搜索当前文件夹 */
+  SEARCH_CURRENT_FOLDER("search_current_folder"),
 
-	/**
-	 * 当前文件夹及所有子文件夹
-	 */
-	SEARCH_CURRENT_FOLDER_AND_CHILD("search_current_folder_and_child"),
+  /** 当前文件夹及所有子文件夹 */
+  SEARCH_CURRENT_FOLDER_AND_CHILD("search_current_folder_and_child"),
 
-	/**
-	 * 当前所有文件夹
-	 */
-	SEARCH_ALL("search_all");
+  /** 当前所有文件夹 */
+  SEARCH_ALL("search_all");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

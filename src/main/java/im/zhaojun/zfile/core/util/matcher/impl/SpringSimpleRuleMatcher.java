@@ -13,23 +13,22 @@ import org.springframework.util.PatternMatchUtils;
 @Slf4j
 public class SpringSimpleRuleMatcher extends AbstractRuleMatcher {
 
-    @Override
-    public boolean match(String ruleExpression, String testStr) {
-        boolean match = PatternMatchUtils.simpleMatch(ruleExpression, testStr);
-        if (log.isDebugEnabled()) {
-            log.debug("Spring Simple 规则匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
-        }
-        return match;
+  @Override
+  public boolean match(String ruleExpression, String testStr) {
+    boolean match = PatternMatchUtils.simpleMatch(ruleExpression, testStr);
+    if (log.isDebugEnabled()) {
+      log.debug("Spring Simple 规则匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
     }
+    return match;
+  }
 
-    @Override
-    public String getRuleType() {
-        return RuleTypeConstant.SPRING_SIMPLE;
-    }
+  @Override
+  public String getRuleType() {
+    return RuleTypeConstant.SPRING_SIMPLE;
+  }
 
-    @Override
-    public boolean contains(String ruleExpression, String testStr) {
-        return match("*" + ruleExpression + "*", testStr);
-    }
-
+  @Override
+  public boolean contains(String ruleExpression, String testStr) {
+    return match("*" + ruleExpression + "*", testStr);
+  }
 }

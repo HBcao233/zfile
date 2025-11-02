@@ -1,10 +1,9 @@
 package im.zhaojun.zfile.module.config.event;
 
 import im.zhaojun.zfile.module.config.model.entity.SystemConfig;
-import org.springframework.stereotype.Component;
-
 import jakarta.annotation.Resource;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zhaojun
@@ -12,13 +11,11 @@ import java.util.List;
 @Component
 public class SystemConfigModifyHandlerChain {
 
-    @Resource
-    private List<ISystemConfigModifyHandler> handlers;
+  @Resource private List<ISystemConfigModifyHandler> handlers;
 
-    public void execute(SystemConfig originalSystemConfig, SystemConfig newSystemConfig) {
-        handlers.stream()
-                .filter(handler -> handler.matches(originalSystemConfig.getName()))
-                .forEach(handler -> handler.modify(originalSystemConfig, newSystemConfig));
-    }
-
+  public void execute(SystemConfig originalSystemConfig, SystemConfig newSystemConfig) {
+    handlers.stream()
+        .filter(handler -> handler.matches(originalSystemConfig.getName()))
+        .forEach(handler -> handler.modify(originalSystemConfig, newSystemConfig));
+  }
 }

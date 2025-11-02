@@ -6,10 +6,9 @@ import lombok.Data;
 @Data
 public class CheckUserDuplicateRequest {
 
-    @Schema(title="用户 id")
-    private Integer id;
+  @Schema(title = "用户 id")
+  private Integer id;
 
-    @Schema(title="用户名")
-    private String username;
-
+  @Schema(title = "用户名")
+  private String username;
 }

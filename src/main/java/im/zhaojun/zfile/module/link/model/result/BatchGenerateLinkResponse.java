@@ -11,7 +11,6 @@ import lombok.Data;
 @Schema(description = "批量生成直链结果类")
 @AllArgsConstructor
 public class BatchGenerateLinkResponse {
-	
-	private String address;
 
+  private String address;
 }

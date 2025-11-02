@@ -18,32 +18,30 @@ import org.springframework.stereotype.Service;
 @Order(1)
 public class ImgCodeLoginVerifyService implements LoginVerifyService {
 
-    @Resource
-    private ImgVerifyCodeService imgVerifyCodeService;
+  @Resource private ImgVerifyCodeService imgVerifyCodeService;
 
-    @Resource
-    private SystemConfigService systemConfigService;
+  @Resource private SystemConfigService systemConfigService;
 
-    @Resource
-    private UserService userService;
+  @Resource private UserService userService;
 
-    @Override
-    public void verify(UserLoginRequest userLoginRequest) {
-        SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
-        if (BooleanUtils.isNotTrue(systemConfig.getLoginImgVerify())) {
-            return;
-        }
-
-        // 如果是管理员, 且开启了管理员二次验证, 则不需要进行图片验证码验证
-        boolean isAdmin = userService.isAdmin(userLoginRequest.getUsername());
-        boolean enable2FA = BooleanUtils.isTrue(systemConfig.getAdminTwoFactorVerify()) && StringUtils.isNotBlank(systemConfig.getLoginVerifySecret());
-        if (isAdmin && enable2FA) {
-            return;
-        }
-
-        String verifyCode = userLoginRequest.getVerifyCode();
-        String verifyCodeUuid = userLoginRequest.getVerifyCodeUUID();
-        imgVerifyCodeService.checkCaptcha(verifyCodeUuid, verifyCode);
+  @Override
+  public void verify(UserLoginRequest userLoginRequest) {
+    SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
+    if (BooleanUtils.isNotTrue(systemConfig.getLoginImgVerify())) {
+      return;
     }
 
+    // 如果是管理员, 且开启了管理员二次验证, 则不需要进行图片验证码验证
+    boolean isAdmin = userService.isAdmin(userLoginRequest.getUsername());
+    boolean enable2FA =
+        BooleanUtils.isTrue(systemConfig.getAdminTwoFactorVerify())
+            && StringUtils.isNotBlank(systemConfig.getLoginVerifySecret());
+    if (isAdmin && enable2FA) {
+      return;
+    }
+
+    String verifyCode = userLoginRequest.getVerifyCode();
+    String verifyCodeUuid = userLoginRequest.getVerifyCodeUUID();
+    imgVerifyCodeService.checkCaptcha(verifyCodeUuid, verifyCode);
+  }
 }

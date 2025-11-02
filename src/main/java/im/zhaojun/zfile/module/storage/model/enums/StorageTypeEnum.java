@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,58 +16,56 @@ import java.util.Map;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum StorageTypeEnum implements IEnum {
 
-    /**
-     * 当前系统支持的所有存储源类型
-     */
-    LOCAL("local", "本地存储"),
-    ALIYUN("aliyun", "阿里云 OSS"),
-    WEBDAV("webdav", "WebDAV"),
-    TENCENT("tencent", "腾讯云 COS"),
-    UPYUN("upyun", "又拍云 USS"),
-    FTP("ftp", "FTP"),
-    SFTP("sftp", "SFTP"),
-    HUAWEI("huawei", "华为云 OBS"),
-    MINIO("minio", "MINIO"),
-    S3("s3", "S3通用协议"),
-    ONE_DRIVE("onedrive", "OneDrive"),
-    ONE_DRIVE_CHINA("onedrive-china", "OneDrive 世纪互联"),
-    SHAREPOINT_DRIVE("sharepoint", "SharePoint"),
-    SHAREPOINT_DRIVE_CHINA("sharepoint-china", "SharePoint 世纪互联"),
-    GOOGLE_DRIVE("google-drive", "Google Drive"),
-    QINIU("qiniu", "七牛云 KODO"),
-    DOGE_CLOUD("doge-cloud", "多吉云"),
-    OPEN115("open115", "115");
+  /** 当前系统支持的所有存储源类型 */
+  LOCAL("local", "本地存储"),
+  ALIYUN("aliyun", "阿里云 OSS"),
+  WEBDAV("webdav", "WebDAV"),
+  TENCENT("tencent", "腾讯云 COS"),
+  UPYUN("upyun", "又拍云 USS"),
+  FTP("ftp", "FTP"),
+  SFTP("sftp", "SFTP"),
+  HUAWEI("huawei", "华为云 OBS"),
+  MINIO("minio", "MINIO"),
+  S3("s3", "S3通用协议"),
+  ONE_DRIVE("onedrive", "OneDrive"),
+  ONE_DRIVE_CHINA("onedrive-china", "OneDrive 世纪互联"),
+  SHAREPOINT_DRIVE("sharepoint", "SharePoint"),
+  SHAREPOINT_DRIVE_CHINA("sharepoint-china", "SharePoint 世纪互联"),
+  GOOGLE_DRIVE("google-drive", "Google Drive"),
+  QINIU("qiniu", "七牛云 KODO"),
+  DOGE_CLOUD("doge-cloud", "多吉云"),
+  OPEN115("open115", "115");
 
-    private static final Map<String, StorageTypeEnum> ENUM_MAP = new HashMap<>();
+  private static final Map<String, StorageTypeEnum> ENUM_MAP = new HashMap<>();
 
-    static {
-        for (StorageTypeEnum type : StorageTypeEnum.values()) {
-            ENUM_MAP.put(type.getKey(), type);
-        }
+  static {
+    for (StorageTypeEnum type : StorageTypeEnum.values()) {
+      ENUM_MAP.put(type.getKey(), type);
     }
+  }
 
-    @Schema(title = "存储源类型枚举 Key", example = "aliyun")
-    @EnumValue
-    private final String key;
+  @Schema(title = "存储源类型枚举 Key", example = "aliyun")
+  @EnumValue
+  private final String key;
 
-    @Schema(title = "存储源类型枚举描述", example = "阿里云 OSS")
-    private final String description;
+  @Schema(title = "存储源类型枚举描述", example = "阿里云 OSS")
+  private final String description;
 
-    StorageTypeEnum(String key, String description) {
-        this.key = key;
-        this.description = description;
-    }
+  StorageTypeEnum(String key, String description) {
+    this.key = key;
+    this.description = description;
+  }
 
-    public String getKey() {
-        return key;
-    }
+  public String getKey() {
+    return key;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    @JsonIgnore
-    public String getValue() {
-        return key;
-    }
+  @JsonIgnore
+  public String getValue() {
+    return key;
+  }
 }

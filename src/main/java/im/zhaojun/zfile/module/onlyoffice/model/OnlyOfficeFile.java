@@ -7,8 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class OnlyOfficeFile {
 
-    private String storageKey;
+  private String storageKey;
 
-    private String pathAndName;
-
+  private String pathAndName;
 }

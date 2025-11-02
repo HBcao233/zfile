@@ -12,22 +12,31 @@ import lombok.Setter;
 @Setter
 public class DogeCloudParam extends S3BaseParam {
 
-    @StorageParamItem(ignoreInput = true, onlyOverwrite = { StorageParamItemAnnoEnum.IGNORE_INPUT })
-    private String endPoint;
+  @StorageParamItem(
+      ignoreInput = true,
+      onlyOverwrite = {StorageParamItemAnnoEnum.IGNORE_INPUT})
+  private String endPoint;
 
-    @StorageParamItem(ignoreInput = true, onlyOverwrite = { StorageParamItemAnnoEnum.IGNORE_INPUT })
-    private String endPointScheme;
+  @StorageParamItem(
+      ignoreInput = true,
+      onlyOverwrite = {StorageParamItemAnnoEnum.IGNORE_INPUT})
+  private String endPointScheme;
 
-    @StorageParamItem(ignoreInput = true, onlyOverwrite = { StorageParamItemAnnoEnum.IGNORE_INPUT })
-    private String bucketName;
+  @StorageParamItem(
+      ignoreInput = true,
+      onlyOverwrite = {StorageParamItemAnnoEnum.IGNORE_INPUT})
+  private String bucketName;
 
-    @StorageParamItem(name = "存储空间名称", order = 40)
-    private String originBucketName;
+  @StorageParamItem(name = "存储空间名称", order = 40)
+  private String originBucketName;
 
-    @StorageParamItem(ignoreInput = true, onlyOverwrite = { StorageParamItemAnnoEnum.IGNORE_INPUT })
-    private boolean isPrivate;
+  @StorageParamItem(
+      ignoreInput = true,
+      onlyOverwrite = {StorageParamItemAnnoEnum.IGNORE_INPUT})
+  private boolean isPrivate;
 
-    @StorageParamItem(ignoreInput = true, onlyOverwrite = { StorageParamItemAnnoEnum.IGNORE_INPUT })
-    private Integer tokenTime;
-
+  @StorageParamItem(
+      ignoreInput = true,
+      onlyOverwrite = {StorageParamItemAnnoEnum.IGNORE_INPUT})
+  private Integer tokenTime;
 }

@@ -7,12 +7,11 @@ package im.zhaojun.zfile.core.util;
  */
 public class NumberUtils {
 
-    public static boolean isNullOrZero(Integer number) {
-        return number == null || number == 0;
-    }
+  public static boolean isNullOrZero(Integer number) {
+    return number == null || number == 0;
+  }
 
-    public static boolean isNotNullOrZero(Integer number) {
-        return number != null && number != 0;
-    }
-
+  public static boolean isNotNullOrZero(Integer number) {
+    return number != null && number != 0;
+  }
 }

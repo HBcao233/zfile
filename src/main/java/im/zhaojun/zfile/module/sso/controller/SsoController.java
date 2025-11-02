@@ -24,41 +24,44 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequiredArgsConstructor
 class SsoController {
 
-    private final SsoService ssoService;
+  private final SsoService ssoService;
 
-    @GetMapping("/{provider}/login")
-    @Operation(summary = "获取单点登录地址")
-    public RedirectView login(@PathVariable String provider, HttpSession session) {
-        String state = IdUtil.fastSimpleUUID();
-        session.setAttribute("state", state);
+  @GetMapping("/{provider}/login")
+  @Operation(summary = "获取单点登录地址")
+  public RedirectView login(@PathVariable String provider, HttpSession session) {
+    String state = IdUtil.fastSimpleUUID();
+    session.setAttribute("state", state);
 
-        String url = ssoService.getAuthRedirectUrl(provider, state);
+    String url = ssoService.getAuthRedirectUrl(provider, state);
 
-        RedirectView redirect = new RedirectView();
-        redirect.setUrl(url);
-        redirect.setStatusCode(HttpStatus.SEE_OTHER);
-        return redirect;
+    RedirectView redirect = new RedirectView();
+    redirect.setUrl(url);
+    redirect.setStatusCode(HttpStatus.SEE_OTHER);
+    return redirect;
+  }
+
+  @GetMapping("/{provider}/login/callback")
+  @Operation(summary = "单点登录回调接口")
+  public RedirectView callback(
+      @PathVariable("provider") String provider,
+      @RequestParam("code") String code,
+      @RequestParam("state") String state,
+      HttpSession session) {
+    Object expectedState = session.getAttribute("state");
+    if (expectedState == null) {
+      String err = URLUtil.encode("当前会话中 state 为空，可能是请求地址和回调地址不一致");
+      return new RedirectView("/sso/login/error?err=" + err);
+    }
+    if (!expectedState.equals(state)) {
+      String err = URLUtil.encode("state 参数不一致，请检查请求地址和回调地址是否一致");
+      return new RedirectView("/sso/login/error?err=" + err);
     }
 
-    @GetMapping("/{provider}/login/callback")
-    @Operation(summary = "单点登录回调接口")
-    public RedirectView callback(@PathVariable("provider") String provider, @RequestParam("code") String code, @RequestParam("state") String state, HttpSession session) {
-        Object expectedState = session.getAttribute("state");
-        if (expectedState == null) {
-            String err = URLUtil.encode("当前会话中 state 为空，可能是请求地址和回调地址不一致");
-            return new RedirectView("/sso/login/error?err=" + err);
-        }
-        if (!expectedState.equals(state)) {
-            String err = URLUtil.encode("state 参数不一致，请检查请求地址和回调地址是否一致");
-            return new RedirectView("/sso/login/error?err=" + err);
-        }
+    String url = ssoService.callbackHandler(provider, code);
 
-        String url = ssoService.callbackHandler(provider, code);
-
-        RedirectView redirect = new RedirectView();
-        redirect.setUrl(url);
-        redirect.setStatusCode(HttpStatus.SEE_OTHER);
-        return redirect;
-    }
-
+    RedirectView redirect = new RedirectView();
+    redirect.setUrl(url);
+    redirect.setStatusCode(HttpStatus.SEE_OTHER);
+    return redirect;
+  }
 }

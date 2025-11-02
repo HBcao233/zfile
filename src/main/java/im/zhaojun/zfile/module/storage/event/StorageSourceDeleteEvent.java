@@ -10,19 +10,18 @@ import lombok.Data;
 @Data
 public class StorageSourceDeleteEvent {
 
-    private Integer id;
+  private Integer id;
 
-    private String key;
+  private String key;
 
-    private String name;
+  private String name;
 
-    private StorageTypeEnum type;
+  private StorageTypeEnum type;
 
-    public StorageSourceDeleteEvent(StorageSource storageSource) {
-        this.id = storageSource.getId();
-        this.key = storageSource.getKey();
-        this.name = storageSource.getName();
-        this.type = storageSource.getType();
-    }
-
+  public StorageSourceDeleteEvent(StorageSource storageSource) {
+    this.id = storageSource.getId();
+    this.key = storageSource.getKey();
+    this.name = storageSource.getName();
+    this.type = storageSource.getType();
+  }
 }

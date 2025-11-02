@@ -12,13 +12,12 @@ import lombok.Data;
 @Schema(description = "SharePoint 站点结果类")
 public class SharepointSiteResult {
 
-	@Schema(title="站点 id")
-	private String id;
+  @Schema(title = "站点 id")
+  private String id;
 
-	@Schema(title="站点名称")
-	private String displayName;
+  @Schema(title = "站点名称")
+  private String displayName;
 
-	@Schema(title="站点地址")
-	private String webUrl;
-
+  @Schema(title = "站点地址")
+  private String webUrl;
 }

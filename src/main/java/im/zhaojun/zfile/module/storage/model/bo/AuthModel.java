@@ -1,4 +1,3 @@
-
 package im.zhaojun.zfile.module.storage.model.bo;
 
 import lombok.AllArgsConstructor;
@@ -13,19 +12,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthModel {
 
-    /**
-     * 上传 url
-     */
-    private String url;
+  /** 上传 url */
+  private String url;
 
-    /**
-     * 上传签名
-     */
-    private String signature;
+  /** 上传签名 */
+  private String signature;
 
-    /**
-     * 上传策略 base64
-     */
-    private String policy;
-
+  /** 上传策略 base64 */
+  private String policy;
 }

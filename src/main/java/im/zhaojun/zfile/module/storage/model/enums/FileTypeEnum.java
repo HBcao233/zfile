@@ -14,18 +14,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FileTypeEnum {
 
-    /**
-     * 文件
-     */
-    FILE("FILE"),
+  /** 文件 */
+  FILE("FILE"),
 
-    /**
-     * 文件夹
-     */
-    FOLDER("FOLDER");
+  /** 文件夹 */
+  FOLDER("FOLDER");
 
-    @EnumValue
-    @JsonValue
-    private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

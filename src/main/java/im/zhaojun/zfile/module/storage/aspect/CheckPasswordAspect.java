@@ -13,6 +13,9 @@ import im.zhaojun.zfile.module.storage.context.StorageSourceContext;
 import im.zhaojun.zfile.module.storage.service.StorageSourceService;
 import im.zhaojun.zfile.module.storage.service.base.AbstractBaseFileService;
 import jakarta.annotation.Resource;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -23,10 +26,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 检查密码切面
  *
@@ -36,76 +35,73 @@ import java.util.List;
 @Component
 @Slf4j
 public class CheckPasswordAspect {
-	
-	@Resource
-	private PasswordConfigService passwordConfigService;
-	
-	@Resource
-	private StorageSourceService storageSourceService;
-	
-	/**
-	 * 校验密码
-	 *
-	 * @param   point
-	 *          连接点
-	 *
-	 * @return  方法运行结果
-	 */
-	@Around(value = "@annotation(im.zhaojun.zfile.module.storage.annotation.CheckPassword) || @annotation(im.zhaojun.zfile.module.storage.annotation.CheckPasswords)")
-	public Object around(ProceedingJoinPoint point) throws Throwable {
-		Signature s = point.getSignature();
-		MethodSignature ms = (MethodSignature) s;
-		Method method = ms.getMethod();
-		List<CheckPassword> checkPasswordList = new ArrayList<>();
 
-		CheckPasswords checkPasswords = method.getAnnotation(CheckPasswords.class);
-		CheckPassword checkPassword = method.getAnnotation(CheckPassword.class);
-		if (checkPasswords != null) {
-			CollectionUtils.addAll(checkPasswordList, checkPasswords.value());
-		} else if (checkPassword != null) {
-			checkPasswordList.add(checkPassword);
-		} else {
-			return point.proceed();
-		}
+  @Resource private PasswordConfigService passwordConfigService;
 
+  @Resource private StorageSourceService storageSourceService;
 
-		for (CheckPassword item : checkPasswordList) {
-			boolean pathIsDirectory = item.pathIsDirectory();
-			String storageKeyFieldExpression = item.storageKeyFieldExpression();
-			String passwordFieldExpression = item.passwordFieldExpression();
-			String pathFieldExpression = item.pathFieldExpression();
+  /**
+   * 校验密码
+   *
+   * @param point 连接点
+   * @return 方法运行结果
+   */
+  @Around(
+      value =
+          "@annotation(im.zhaojun.zfile.module.storage.annotation.CheckPassword) ||"
+              + " @annotation(im.zhaojun.zfile.module.storage.annotation.CheckPasswords)")
+  public Object around(ProceedingJoinPoint point) throws Throwable {
+    Signature s = point.getSignature();
+    MethodSignature ms = (MethodSignature) s;
+    Method method = ms.getMethod();
+    List<CheckPassword> checkPasswordList = new ArrayList<>();
 
-			Object[] args = point.getArgs();
+    CheckPasswords checkPasswords = method.getAnnotation(CheckPasswords.class);
+    CheckPassword checkPassword = method.getAnnotation(CheckPassword.class);
+    if (checkPasswords != null) {
+      CollectionUtils.addAll(checkPasswordList, checkPasswords.value());
+    } else if (checkPassword != null) {
+      checkPasswordList.add(checkPassword);
+    } else {
+      return point.proceed();
+    }
 
-			String storageKeyFieldValue = getFieldValue(args, storageKeyFieldExpression);
-			String passwordFieldValue = getFieldValue(args, passwordFieldExpression);
-			String pathFieldValue = getFieldValue(args, pathFieldExpression);
+    for (CheckPassword item : checkPasswordList) {
+      boolean pathIsDirectory = item.pathIsDirectory();
+      String storageKeyFieldExpression = item.storageKeyFieldExpression();
+      String passwordFieldExpression = item.passwordFieldExpression();
+      String pathFieldExpression = item.pathFieldExpression();
 
-			if (!pathIsDirectory) {
-				pathFieldValue = FileUtils.getParentPath(pathFieldValue);
-			}
+      Object[] args = point.getArgs();
 
-			Integer storageId = storageSourceService.findIdByKey(storageKeyFieldValue);
+      String storageKeyFieldValue = getFieldValue(args, storageKeyFieldExpression);
+      String passwordFieldValue = getFieldValue(args, passwordFieldExpression);
+      String pathFieldValue = getFieldValue(args, pathFieldExpression);
 
-			if (storageId == null) {
-				throw new BizException(ErrorCode.BIZ_STORAGE_NOT_FOUND);
-			}
+      if (!pathIsDirectory) {
+        pathFieldValue = FileUtils.getParentPath(pathFieldValue);
+      }
 
-			AbstractBaseFileService<?> targetService = StorageSourceContext.getByStorageId(storageId);
-			String fullPath = StringUtils.concat(targetService.getCurrentUserBasePath(), pathFieldValue);
-			VerifyResultDTO verifyResultDTO = passwordConfigService.verifyPassword(storageId, fullPath, passwordFieldValue);
-			if (!verifyResultDTO.isPassed()) {
-				throw new BizException(verifyResultDTO.getErrorCode());
-			}
-		}
-		return point.proceed();
-	}
-	
-	
-	public String getFieldValue(Object target, String expression) {
-		SpelExpressionParser parser = new SpelExpressionParser();
-		Expression exp = parser.parseExpression(expression);
-		return (String) exp.getValue(target);
-	}
-	
+      Integer storageId = storageSourceService.findIdByKey(storageKeyFieldValue);
+
+      if (storageId == null) {
+        throw new BizException(ErrorCode.BIZ_STORAGE_NOT_FOUND);
+      }
+
+      AbstractBaseFileService<?> targetService = StorageSourceContext.getByStorageId(storageId);
+      String fullPath = StringUtils.concat(targetService.getCurrentUserBasePath(), pathFieldValue);
+      VerifyResultDTO verifyResultDTO =
+          passwordConfigService.verifyPassword(storageId, fullPath, passwordFieldValue);
+      if (!verifyResultDTO.isPassed()) {
+        throw new BizException(verifyResultDTO.getErrorCode());
+      }
+    }
+    return point.proceed();
+  }
+
+  public String getFieldValue(Object target, String expression) {
+    SpelExpressionParser parser = new SpelExpressionParser();
+    Expression exp = parser.parseExpression(expression);
+    return (String) exp.getValue(target);
+  }
 }

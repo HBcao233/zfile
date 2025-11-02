@@ -13,12 +13,11 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * 存储源权限控制 Controller
@@ -31,26 +30,30 @@ import java.util.List;
 @RequestMapping("/admin")
 public class StorageSourcePermissionController {
 
-	@Resource
-	private PermissionConfigService permissionConfigService;
+  @Resource private PermissionConfigService permissionConfigService;
 
-	@Resource
-	private PermissionConfigConvert permissionConfigConvert;
+  @Resource private PermissionConfigConvert permissionConfigConvert;
 
-	@ApiOperationSupport(order = 1)
-	@Operation(summary = "获取存储源权限列表", description ="根据存储源 ID 获取存储源权限列表")
-	@Parameter(in = ParameterIn.PATH, name = "storageId", description = "存储源 id", required = true, schema = @Schema(type = "integer"))
-	@GetMapping("/storage/{storageId}/permission")
-	public AjaxJson<List<PermissionConfigResult>> getPermissionList(@PathVariable Integer storageId) {
-		List<PermissionConfig> permissionList = permissionConfigService.findByStorageId(storageId);
+  @ApiOperationSupport(order = 1)
+  @Operation(summary = "获取存储源权限列表", description = "根据存储源 ID 获取存储源权限列表")
+  @Parameter(
+      in = ParameterIn.PATH,
+      name = "storageId",
+      description = "存储源 id",
+      required = true,
+      schema = @Schema(type = "integer"))
+  @GetMapping("/storage/{storageId}/permission")
+  public AjaxJson<List<PermissionConfigResult>> getPermissionList(@PathVariable Integer storageId) {
+    List<PermissionConfig> permissionList = permissionConfigService.findByStorageId(storageId);
 
-		List<PermissionConfigResult> permissionConfigResults = permissionConfigConvert.toResult(permissionList);
-		permissionConfigResults.forEach(permissionConfigResult -> {
-			permissionConfigResult.setOperatorName(permissionConfigResult.getOperator().getName());
-			permissionConfigResult.setTips(permissionConfigResult.getOperator().getTips());
-		});
-		
-		return AjaxJson.getSuccessData(permissionConfigResults);
-	}
+    List<PermissionConfigResult> permissionConfigResults =
+        permissionConfigConvert.toResult(permissionList);
+    permissionConfigResults.forEach(
+        permissionConfigResult -> {
+          permissionConfigResult.setOperatorName(permissionConfigResult.getOperator().getName());
+          permissionConfigResult.setTips(permissionConfigResult.getOperator().getTips());
+        });
 
+    return AjaxJson.getSuccessData(permissionConfigResults);
+  }
 }

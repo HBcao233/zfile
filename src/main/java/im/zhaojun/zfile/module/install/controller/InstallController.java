@@ -20,23 +20,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class InstallController {
 
-    @Resource
-    private InstallService installService;
+  @Resource private InstallService installService;
 
-    @GetMapping("/install/status")
-    @ApiOperationSupport(order = 1)
-    @Operation(summary = "获取系统初始化状态", description = "根据管理员用户名是否存在判断系统已初始化, 已初始化返回 true, 未初始化返回 false")
-    public AjaxJson<Boolean> isInstall() {
-        return AjaxJson.getSuccessData(installService.getSystemIsInstalled());
-    }
+  @GetMapping("/install/status")
+  @ApiOperationSupport(order = 1)
+  @Operation(summary = "获取系统初始化状态", description = "根据管理员用户名是否存在判断系统已初始化, 已初始化返回 true, 未初始化返回 false")
+  public AjaxJson<Boolean> isInstall() {
+    return AjaxJson.getSuccessData(installService.getSystemIsInstalled());
+  }
 
-    @ApiOperationSupport(order = 2)
-    @Operation(summary = "初始化系统", description = "根据管理员用户名是否存在判断系统已初始化, 已初始化返回 true, 未初始化返回 false")
-    @PostMapping("/install")
-    @DemoDisable
-    public AjaxJson<Void> install(@RequestBody InstallSystemRequest installSystemRequest) {
-        installService.install(installSystemRequest);
-        return AjaxJson.getSuccess();
-    }
-
+  @ApiOperationSupport(order = 2)
+  @Operation(summary = "初始化系统", description = "根据管理员用户名是否存在判断系统已初始化, 已初始化返回 true, 未初始化返回 false")
+  @PostMapping("/install")
+  @DemoDisable
+  public AjaxJson<Void> install(@RequestBody InstallSystemRequest installSystemRequest) {
+    installService.install(installSystemRequest);
+    return AjaxJson.getSuccess();
+  }
 }

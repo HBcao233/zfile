@@ -14,14 +14,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StorageParamSelectOption {
 
-	/**
-	 * 选项显示值
-	 */
-	String label() default "";
+  /** 选项显示值 */
+  String label() default "";
 
-	/**
-	 * 选项存储值
-	 */
-	String value();
-
+  /** 选项存储值 */
+  String value();
 }

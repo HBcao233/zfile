@@ -14,18 +14,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum SearchModeEnum {
 
-	/**
-	 * 仅搜索缓存
-	 */
-	SEARCH_CACHE_MODE("SEARCH_CACHE"),
+  /** 仅搜索缓存 */
+  SEARCH_CACHE_MODE("SEARCH_CACHE"),
 
-	/**
-	 * 搜索全部
-	 */
-	SEARCH_ALL_MODE("SEARCH_ALL");
+  /** 搜索全部 */
+  SEARCH_ALL_MODE("SEARCH_ALL");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

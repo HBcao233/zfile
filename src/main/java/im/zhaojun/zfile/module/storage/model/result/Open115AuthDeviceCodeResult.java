@@ -5,14 +5,13 @@ import lombok.Data;
 @Data
 public class Open115AuthDeviceCodeResult {
 
-    private String uid;
+  private String uid;
 
-    private Integer time;
+  private Integer time;
 
-    private String sign;
+  private String sign;
 
-    private String codeVerifier;
+  private String codeVerifier;
 
-    private String qrcode;
-
+  private String qrcode;
 }

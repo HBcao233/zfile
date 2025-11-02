@@ -6,10 +6,9 @@ import lombok.Data;
 @Data
 public class CheckProviderDuplicateRequest {
 
-    @Schema(title="id")
-    private Integer id;
+  @Schema(title = "id")
+  private Integer id;
 
-    @Schema(title="提供商")
-    private String provider;
-
+  @Schema(title = "提供商")
+  private String provider;
 }

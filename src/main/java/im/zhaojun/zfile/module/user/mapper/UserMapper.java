@@ -8,10 +8,12 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-    Integer findIdByUsername(@Param("username") String username);
+  Integer findIdByUsername(@Param("username") String username);
 
-    int countByUsername(@Param("username") String username, @Param("ignoreId") Integer ignoreId);
+  int countByUsername(@Param("username") String username, @Param("ignoreId") Integer ignoreId);
 
-    int updateUserNameAndPwdById(@Param("id") Integer id, @Param("username") String username, @Param("password") String password);
-
+  int updateUserNameAndPwdById(
+      @Param("id") Integer id,
+      @Param("username") String username,
+      @Param("password") String password);
 }

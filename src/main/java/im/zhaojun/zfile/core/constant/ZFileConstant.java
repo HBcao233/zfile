@@ -12,14 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ZFileConstant {
 
-    /**
-     * 最大支持文本文件大小为 ? KB 的文件内容.
-     */
-    public static Long TEXT_MAX_FILE_SIZE_KB = 100L;
+  /** 最大支持文本文件大小为 ? KB 的文件内容. */
+  public static Long TEXT_MAX_FILE_SIZE_KB = 100L;
 
-    @Autowired(required = false)
-    public void setTextMaxFileSizeMb(@Value("${zfile.preview.text.maxFileSizeKb}") Long maxFileSizeKb) {
-        ZFileConstant.TEXT_MAX_FILE_SIZE_KB = maxFileSizeKb;
-    }
-
+  @Autowired(required = false)
+  public void setTextMaxFileSizeMb(
+      @Value("${zfile.preview.text.maxFileSizeKb}") Long maxFileSizeKb) {
+    ZFileConstant.TEXT_MAX_FILE_SIZE_KB = maxFileSizeKb;
+  }
 }

@@ -7,10 +7,9 @@ package im.zhaojun.zfile.core.constant;
  */
 public class ZFileHttpHeaderConstant {
 
-    public static final String ZFILE_TOKEN = "Zfile-Token";
+  public static final String ZFILE_TOKEN = "Zfile-Token";
 
-    public static final String AXIOS_REQUEST = "Axios-Request";
+  public static final String AXIOS_REQUEST = "Axios-Request";
 
-    public static final String AXIOS_FROM = "Axios-From";
-
+  public static final String AXIOS_FROM = "Axios-From";
 }

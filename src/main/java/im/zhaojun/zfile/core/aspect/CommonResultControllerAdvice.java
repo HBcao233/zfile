@@ -23,47 +23,48 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @ControllerAdvice
 public class CommonResultControllerAdvice implements ResponseBodyAdvice<Object> {
 
-	@Override
-	public boolean supports(MethodParameter returnType,
-							@NonNull Class<? extends HttpMessageConverter<?>> converterType) {
-		return AbstractJackson2HttpMessageConverter.class.isAssignableFrom(converterType);
-	}
+  @Override
+  public boolean supports(
+      MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
+    return AbstractJackson2HttpMessageConverter.class.isAssignableFrom(converterType);
+  }
 
-	@Override
-	@NonNull
-	public final Object beforeBodyWrite(@Nullable Object body,
-										@NonNull MethodParameter returnType,
-										@NonNull MediaType contentType,
-										@NonNull Class<? extends HttpMessageConverter<?>> converterType,
-										@NonNull ServerHttpRequest request,
-										@NonNull ServerHttpResponse response) {
-		MappingJacksonValue container = getOrCreateContainer(body);
-		// The contain body will never be null
-		beforeBodyWriteInternal(container, contentType, returnType, request, response);
-		return container;
-	}
+  @Override
+  @NonNull public final Object beforeBodyWrite(
+      @Nullable Object body,
+      @NonNull MethodParameter returnType,
+      @NonNull MediaType contentType,
+      @NonNull Class<? extends HttpMessageConverter<?>> converterType,
+      @NonNull ServerHttpRequest request,
+      @NonNull ServerHttpResponse response) {
+    MappingJacksonValue container = getOrCreateContainer(body);
+    // The contain body will never be null
+    beforeBodyWriteInternal(container, contentType, returnType, request, response);
+    return container;
+  }
 
-	/**
-	 * Wrap the body in a {@link MappingJacksonValue} value container (for providing
-	 * additional serialization instructions) or simply cast it if already wrapped.
-	 */
-	private MappingJacksonValue getOrCreateContainer(Object body) {
-		return body instanceof MappingJacksonValue ? (MappingJacksonValue) body :
-				new MappingJacksonValue(body);
-	}
+  /**
+   * Wrap the body in a {@link MappingJacksonValue} value container (for providing additional
+   * serialization instructions) or simply cast it if already wrapped.
+   */
+  private MappingJacksonValue getOrCreateContainer(Object body) {
+    return body instanceof MappingJacksonValue
+        ? (MappingJacksonValue) body
+        : new MappingJacksonValue(body);
+  }
 
-	private void beforeBodyWriteInternal(MappingJacksonValue bodyContainer,
-										 MediaType contentType,
-										 MethodParameter returnType,
-										 ServerHttpRequest request,
-										 ServerHttpResponse response) {
-		// Get return body
-		Object returnBody = bodyContainer.getValue();
+  private void beforeBodyWriteInternal(
+      MappingJacksonValue bodyContainer,
+      MediaType contentType,
+      MethodParameter returnType,
+      ServerHttpRequest request,
+      ServerHttpResponse response) {
+    // Get return body
+    Object returnBody = bodyContainer.getValue();
 
-		if (returnBody instanceof AjaxJson<?> baseResponse) {
-            // 将 MDC 中的 TraceId 设置到返回值中
-			baseResponse.setTraceId(MDC.get(MdcConstant.TRACE_ID));
-		}
-	}
-
+    if (returnBody instanceof AjaxJson<?> baseResponse) {
+      // 将 MDC 中的 TraceId 设置到返回值中
+      baseResponse.setTraceId(MDC.get(MdcConstant.TRACE_ID));
+    }
+  }
 }

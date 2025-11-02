@@ -16,28 +16,27 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "zfile")
 public class ZFileProperties {
 
-	private boolean debug;
+  private boolean debug;
 
-	private String version;
+  private String version;
 
-	private boolean isDemoSite;
+  private boolean isDemoSite;
 
-	private OAuth2Properties onedrive = new OAuth2Properties();
-	private OAuth2Properties onedriveChina = new OAuth2Properties();
-	private OAuth2Properties gd = new OAuth2Properties();
-	private Open115Properties open115 = new Open115Properties();
+  private OAuth2Properties onedrive = new OAuth2Properties();
+  private OAuth2Properties onedriveChina = new OAuth2Properties();
+  private OAuth2Properties gd = new OAuth2Properties();
+  private Open115Properties open115 = new Open115Properties();
 
-	@Data
-	public static class OAuth2Properties {
-		private String clientId;
-		private String clientSecret;
-		private String redirectUri;
-		private String scope;
-	}
+  @Data
+  public static class OAuth2Properties {
+    private String clientId;
+    private String clientSecret;
+    private String redirectUri;
+    private String scope;
+  }
 
-	@Data
-	public static class Open115Properties {
-		private String appId;
-	}
-
+  @Data
+  public static class Open115Properties {
+    private String appId;
+  }
 }

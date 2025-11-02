@@ -8,6 +8,4 @@ import lombok.Getter;
  * @author zhaojun
  */
 @Getter
-public class HuaweiParam extends S3BaseParam {
-
-}
+public class HuaweiParam extends S3BaseParam {}

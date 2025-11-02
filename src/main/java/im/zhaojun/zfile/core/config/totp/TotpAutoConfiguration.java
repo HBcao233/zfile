@@ -19,58 +19,58 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({TotpProperties.class})
 public class TotpAutoConfiguration {
 
-    private final TotpProperties props;
+  private final TotpProperties props;
 
-    @Autowired
-    public TotpAutoConfiguration(TotpProperties props) {
-        this.props = props;
-    }
+  @Autowired
+  public TotpAutoConfiguration(TotpProperties props) {
+    this.props = props;
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public SecretGenerator secretGenerator() {
-        int length = this.props.getSecret().getLength();
-        return new DefaultSecretGenerator(length);
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public SecretGenerator secretGenerator() {
+    int length = this.props.getSecret().getLength();
+    return new DefaultSecretGenerator(length);
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public TimeProvider timeProvider() {
-        return new SystemTimeProvider();
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public TimeProvider timeProvider() {
+    return new SystemTimeProvider();
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public HashingAlgorithm hashingAlgorithm() {
-        return HashingAlgorithm.SHA1;
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public HashingAlgorithm hashingAlgorithm() {
+    return HashingAlgorithm.SHA1;
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public QrDataFactory qrDataFactory(HashingAlgorithm hashingAlgorithm) {
-        return new QrDataFactory(hashingAlgorithm, this.getCodeLength(), this.getTimePeriod());
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public QrDataFactory qrDataFactory(HashingAlgorithm hashingAlgorithm) {
+    return new QrDataFactory(hashingAlgorithm, this.getCodeLength(), this.getTimePeriod());
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public CodeGenerator codeGenerator(HashingAlgorithm algorithm) {
-        return new DefaultCodeGenerator(algorithm, this.getCodeLength());
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public CodeGenerator codeGenerator(HashingAlgorithm algorithm) {
+    return new DefaultCodeGenerator(algorithm, this.getCodeLength());
+  }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public CodeVerifier codeVerifier(CodeGenerator codeGenerator, TimeProvider timeProvider) {
-        DefaultCodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
-        verifier.setTimePeriod(this.getTimePeriod());
-        verifier.setAllowedTimePeriodDiscrepancy(this.props.getTime().getDiscrepancy());
-        return verifier;
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public CodeVerifier codeVerifier(CodeGenerator codeGenerator, TimeProvider timeProvider) {
+    DefaultCodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
+    verifier.setTimePeriod(this.getTimePeriod());
+    verifier.setAllowedTimePeriodDiscrepancy(this.props.getTime().getDiscrepancy());
+    return verifier;
+  }
 
-    private int getCodeLength() {
-        return this.props.getCode().getLength();
-    }
+  private int getCodeLength() {
+    return this.props.getCode().getLength();
+  }
 
-    private int getTimePeriod() {
-        return this.props.getTime().getPeriod();
-    }
+  private int getTimePeriod() {
+    return this.props.getTime().getPeriod();
+  }
 }

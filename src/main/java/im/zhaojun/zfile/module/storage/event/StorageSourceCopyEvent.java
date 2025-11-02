@@ -8,13 +8,12 @@ import lombok.Data;
 @Data
 public class StorageSourceCopyEvent {
 
-    private Integer fromId;
+  private Integer fromId;
 
-    private Integer newId;
+  private Integer newId;
 
-    public StorageSourceCopyEvent(Integer fromId, Integer newId) {
-        this.fromId = fromId;
-        this.newId = newId;
-    }
-
+  public StorageSourceCopyEvent(Integer fromId, Integer newId) {
+    this.fromId = fromId;
+    this.newId = newId;
+  }
 }

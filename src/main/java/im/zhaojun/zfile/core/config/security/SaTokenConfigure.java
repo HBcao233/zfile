@@ -16,23 +16,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SaTokenConfigure implements WebMvcConfigurer {
 
-    /**
-     * 注册权限校验拦截器, 拦截所有 /admin/** 请求，但不包含 /admin 因为这个是登录页面.
-     *
-     * @param   registry
-     *          拦截器注册器
-     */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SaInterceptor(handle -> {
-            SaRouter.match("/admin/**", () -> {
-                StpUtil.checkLogin();
-                StpUtil.checkRole("admin");
-            });
-        })).addPathPatterns("/**").excludePathPatterns("/admin");
+  /**
+   * 注册权限校验拦截器, 拦截所有 /admin/** 请求，但不包含 /admin 因为这个是登录页面.
+   *
+   * @param registry 拦截器注册器
+   */
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry
+        .addInterceptor(
+            new SaInterceptor(
+                handle -> {
+                  SaRouter.match(
+                      "/admin/**",
+                      () -> {
+                        StpUtil.checkLogin();
+                        StpUtil.checkRole("admin");
+                      });
+                }))
+        .addPathPatterns("/**")
+        .excludePathPatterns("/admin");
 
-        // 不再依赖 SaToken 的默认路径检查功能
-        SaStrategy.instance.checkRequestPath = (path, extArg1, extArg2) -> {};
-    }
-
+    // 不再依赖 SaToken 的默认路径检查功能
+    SaStrategy.instance.checkRequestPath = (path, extArg1, extArg2) -> {};
+  }
 }

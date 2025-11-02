@@ -14,18 +14,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FileClickModeEnum {
 
-	/**
-	 * 单击打开文件/文件夹
-	 */
-	CLICK("click"),
+  /** 单击打开文件/文件夹 */
+  CLICK("click"),
 
-	/**
-	 * 双击打开文件/文件夹
-	 */
-	DBCLICK("dbclick");
+  /** 双击打开文件/文件夹 */
+  DBCLICK("dbclick");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

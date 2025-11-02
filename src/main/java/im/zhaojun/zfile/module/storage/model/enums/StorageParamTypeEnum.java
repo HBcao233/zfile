@@ -14,33 +14,20 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum StorageParamTypeEnum {
 
-	/**
-	 * 输入框
-	 */
-	INPUT("input"),
+  /** 输入框 */
+  INPUT("input"),
 
-	/**
-	 * 数字输入框
-	 */
-	NUMBER("number"),
+  /** 数字输入框 */
+  NUMBER("number"),
 
-	/**
-	 * 多行文本输入框
-	 */
-	TEXTAREA("textarea"),
+  /** 多行文本输入框 */
+  TEXTAREA("textarea"),
 
-	/**
-	 * 下拉框
-	 */
-	SELECT("select"),
+  /** 下拉框 */
+  SELECT("select"),
 
-	/**
-	 * 开关
-	 */
-	SWITCH("switch");
+  /** 开关 */
+  SWITCH("switch");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

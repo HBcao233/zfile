@@ -21,16 +21,18 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class SpringCacheConfig {
 
-	@Value("${zfile.dbCache.enable:true}")
-	private Boolean dbCacheEnable;
+  @Value("${zfile.dbCache.enable:true}")
+  private Boolean dbCacheEnable;
 
-	/**
-	 * 使用 TransactionAwareCacheManagerProxy 装饰 ConcurrentMapCacheManager，使其支持事务 （将 put、evict、clear 操作延迟到事务成功提交再执行.）
-	 */
-	@Bean
-	@ConditionalOnMissingBean(SaTokenDaoRedisJackson.class)
-	public CacheManager cacheManager() {
-		return BooleanUtils.isNotTrue(dbCacheEnable) ? new NoOpCacheManager() : new TransactionAwareCacheManagerProxy(new ConcurrentMapCacheManager());
-	}
-	
+  /**
+   * 使用 TransactionAwareCacheManagerProxy 装饰 ConcurrentMapCacheManager，使其支持事务 （将 put、evict、clear
+   * 操作延迟到事务成功提交再执行.）
+   */
+  @Bean
+  @ConditionalOnMissingBean(SaTokenDaoRedisJackson.class)
+  public CacheManager cacheManager() {
+    return BooleanUtils.isNotTrue(dbCacheEnable)
+        ? new NoOpCacheManager()
+        : new TransactionAwareCacheManagerProxy(new ConcurrentMapCacheManager());
+  }
 }

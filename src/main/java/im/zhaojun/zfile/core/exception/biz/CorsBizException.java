@@ -9,13 +9,12 @@ import lombok.Getter;
 @Getter
 public class CorsBizException extends BizException {
 
-    public CorsBizException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  public CorsBizException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    @Override
-    public boolean printExceptionStackTrace() {
-        return true;
-    }
-
+  @Override
+  public boolean printExceptionStackTrace() {
+    return true;
+  }
 }

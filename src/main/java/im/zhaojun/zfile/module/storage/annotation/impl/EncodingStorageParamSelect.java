@@ -2,9 +2,8 @@ package im.zhaojun.zfile.module.storage.annotation.impl;
 
 import im.zhaojun.zfile.module.storage.annotation.StorageParamItem;
 import im.zhaojun.zfile.module.storage.annotation.StorageParamSelect;
-import im.zhaojun.zfile.module.storage.model.param.IStorageParam;
 import im.zhaojun.zfile.module.storage.model.bo.StorageSourceParamDef;
-
+import im.zhaojun.zfile.module.storage.model.param.IStorageParam;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,15 @@ import java.util.List;
  */
 public class EncodingStorageParamSelect implements StorageParamSelect {
 
-	@Override
-	public List<StorageSourceParamDef.Options> getOptions(StorageParamItem storageParamItem, IStorageParam targetParam) {
-		List<StorageSourceParamDef.Options> options = new ArrayList<>();
+  @Override
+  public List<StorageSourceParamDef.Options> getOptions(
+      StorageParamItem storageParamItem, IStorageParam targetParam) {
+    List<StorageSourceParamDef.Options> options = new ArrayList<>();
 
-		for (String name : Charset.availableCharsets().keySet()) {
-			StorageSourceParamDef.Options option = new StorageSourceParamDef.Options(name);
-			options.add(option);
-		}
-		return options;
-	}
-
+    for (String name : Charset.availableCharsets().keySet()) {
+      StorageSourceParamDef.Options option = new StorageSourceParamDef.Options(name);
+      options.add(option);
+    }
+    return options;
+  }
 }

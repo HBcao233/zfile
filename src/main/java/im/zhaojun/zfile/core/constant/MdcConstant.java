@@ -6,11 +6,10 @@ package im.zhaojun.zfile.core.constant;
  * @author zhaojun
  */
 public class MdcConstant {
-	
-	public static final String TRACE_ID = "traceId";
-	
-	public static final String IP = "ip";
-	
-	public static final String USER = "user";
-	
+
+  public static final String TRACE_ID = "traceId";
+
+  public static final String IP = "ip";
+
+  public static final String USER = "user";
 }

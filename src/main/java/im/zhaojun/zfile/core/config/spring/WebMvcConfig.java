@@ -16,28 +16,27 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    /**
-     * 支持 url 中传入 <>[\]^`{|} 这些特殊字符.
-     */
-    @Bean
-    public ServletWebServerFactory webServerFactory() {
-        TomcatServletWebServerFactory webServerFactory = new TomcatServletWebServerFactory();
+  /** 支持 url 中传入 <>[\]^`{|} 这些特殊字符. */
+  @Bean
+  public ServletWebServerFactory webServerFactory() {
+    TomcatServletWebServerFactory webServerFactory = new TomcatServletWebServerFactory();
 
-        // 添加对 URL 中特殊符号的支持.
-        webServerFactory.addConnectorCustomizers(connector -> {
-            connector.setProperty("relaxedPathChars", "<>[\\]^`{|}%[]");
-            connector.setProperty("relaxedQueryChars", "<>[\\]^`{|}%[]");
+    // 添加对 URL 中特殊符号的支持.
+    webServerFactory.addConnectorCustomizers(
+        connector -> {
+          connector.setProperty("relaxedPathChars", "<>[\\]^`{|}%[]");
+          connector.setProperty("relaxedQueryChars", "<>[\\]^`{|}%[]");
         });
-        return webServerFactory;
-    }
+    return webServerFactory;
+  }
 
-    /**
-     * 添加自定义枚举格式化器.
-     * @see StorageTypeEnum
-     */
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverterFactory(new StringToEnumConverterFactory());
-    }
-
+  /**
+   * 添加自定义枚举格式化器.
+   *
+   * @see StorageTypeEnum
+   */
+  @Override
+  public void addFormatters(FormatterRegistry registry) {
+    registry.addConverterFactory(new StringToEnumConverterFactory());
+  }
 }

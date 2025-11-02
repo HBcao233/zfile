@@ -8,6 +8,4 @@ import lombok.Getter;
  * @author zhaojun
  */
 @Getter
-public class OneDriveParam extends MicrosoftDriveParam {
-
-}
+public class OneDriveParam extends MicrosoftDriveParam {}

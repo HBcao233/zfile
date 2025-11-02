@@ -14,28 +14,17 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LoginLogModeEnum {
 
-	/**
-	 * 不记录登录日志
-	 */
-	OFF("off"),
+  /** 不记录登录日志 */
+  OFF("off"),
 
-	/**
-	 * 记录所有登录信息作为日志
-	 */
-	ALL("all"),
+  /** 记录所有登录信息作为日志 */
+  ALL("all"),
 
-	/**
-	 * 不在日志中记录登录成功的密码
-	 */
-	IGNORE_SUCCESS_PWD("ignoreSuccessPwd"),
+  /** 不在日志中记录登录成功的密码 */
+  IGNORE_SUCCESS_PWD("ignoreSuccessPwd"),
 
-	/**
-	 * 不在日志中记录密码
-	 */
-	IGNORE_ALL_PWD("ignoreAllPwd");
+  /** 不在日志中记录密码 */
+  IGNORE_ALL_PWD("ignoreAllPwd");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

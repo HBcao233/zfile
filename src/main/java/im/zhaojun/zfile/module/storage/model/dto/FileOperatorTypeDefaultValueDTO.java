@@ -11,9 +11,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FileOperatorTypeDefaultValueDTO {
-	
-	private boolean allowAdmin;
-	
-	private boolean allowAnonymous;
-	
+
+  private boolean allowAdmin;
+
+  private boolean allowAnonymous;
 }

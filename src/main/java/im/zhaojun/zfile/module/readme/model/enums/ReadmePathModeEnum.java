@@ -14,18 +14,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ReadmePathModeEnum {
 
-	/**
-	 * 相对路径
-	 */
-    RELATIVE("relative"),
+  /** 相对路径 */
+  RELATIVE("relative"),
 
-	/**
-	 * 绝对路径
-	 */
-    ABSOLUTE("absolute");
+  /** 绝对路径 */
+  ABSOLUTE("absolute");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

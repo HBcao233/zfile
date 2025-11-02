@@ -11,13 +11,12 @@ import lombok.Data;
 @Data
 public class UserDeleteEvent {
 
-    private Integer id;
+  private Integer id;
 
-    private String username;
+  private String username;
 
-    public UserDeleteEvent(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-    }
-
+  public UserDeleteEvent(User user) {
+    this.id = user.getId();
+    this.username = user.getUsername();
+  }
 }

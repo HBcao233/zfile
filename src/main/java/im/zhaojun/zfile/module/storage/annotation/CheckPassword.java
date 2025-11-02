@@ -11,25 +11,16 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Repeatable(CheckPasswords.class)
 public @interface CheckPassword {
-	
-	/**
-	 * 存储源 key 字段表达式
-	 */
-	String storageKeyFieldExpression();
-	
-	/**
-	 * 路径字段名称
-	 */
-	String pathFieldExpression();
-	
-	/**
-	 * 密码字段名称
-	 */
-	String passwordFieldExpression();
-	
-	/**
-	 * 路径是否是文件夹, 如果为 false, 则会取路径的父目录作为路径
-	 */
-	boolean pathIsDirectory() default true;
-	
+
+  /** 存储源 key 字段表达式 */
+  String storageKeyFieldExpression();
+
+  /** 路径字段名称 */
+  String pathFieldExpression();
+
+  /** 密码字段名称 */
+  String passwordFieldExpression();
+
+  /** 路径是否是文件夹, 如果为 false, 则会取路径的父目录作为路径 */
+  boolean pathIsDirectory() default true;
 }

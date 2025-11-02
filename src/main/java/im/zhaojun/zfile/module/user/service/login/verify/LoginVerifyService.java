@@ -4,6 +4,5 @@ import im.zhaojun.zfile.module.user.model.request.UserLoginRequest;
 
 public interface LoginVerifyService {
 
-    void verify(UserLoginRequest userLoginRequest);
-
+  void verify(UserLoginRequest userLoginRequest);
 }

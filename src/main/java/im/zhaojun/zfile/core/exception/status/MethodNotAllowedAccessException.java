@@ -6,14 +6,15 @@ import im.zhaojun.zfile.core.exception.core.BizException;
 
 /**
  * 错误请求异常, 表示请求方法有误或者服务器无法理解, 一般返回 405 状态码
- * <p/>
- * 需要全局异常处理器捕获此异常, 并记录日志. {@link GlobalExceptionHandler#methodNotAllowedAccessException(MethodNotAllowedAccessException)}
+ *
+ * <p>需要全局异常处理器捕获此异常, 并记录日志. {@link
+ * GlobalExceptionHandler#methodNotAllowedAccessException(MethodNotAllowedAccessException)}
  *
  * @author zhaojun
  */
 public class MethodNotAllowedAccessException extends BizException {
 
-    public MethodNotAllowedAccessException(ErrorCode errorCode) {
-        super(errorCode);
-    }
+  public MethodNotAllowedAccessException(ErrorCode errorCode) {
+    super(errorCode);
+  }
 }

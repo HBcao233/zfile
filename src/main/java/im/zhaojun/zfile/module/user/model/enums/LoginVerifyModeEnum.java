@@ -14,23 +14,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LoginVerifyModeEnum {
 
-	/**
-	 * 不启用登陆模式
-	 */
-	OFF_MODE("off"),
+  /** 不启用登陆模式 */
+  OFF_MODE("off"),
 
-	/**
-	 * 图形验证码模式
-	 */
-	IMG_VERIFY_MODE("image"),
+  /** 图形验证码模式 */
+  IMG_VERIFY_MODE("image"),
 
-	/**
-	 * 图形验证码模式
-	 */
-	TWO_FACTOR_AUTHENTICATION_MODE("2fa");
+  /** 图形验证码模式 */
+  TWO_FACTOR_AUTHENTICATION_MODE("2fa");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

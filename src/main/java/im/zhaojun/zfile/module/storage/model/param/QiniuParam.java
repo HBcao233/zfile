@@ -8,6 +8,4 @@ import lombok.Getter;
  * @author zhaojun
  */
 @Getter
-public class QiniuParam extends S3BaseParam {
-
-}
+public class QiniuParam extends S3BaseParam {}

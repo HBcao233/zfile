@@ -9,35 +9,34 @@ import java.util.Collection;
  */
 public abstract class AbstractRuleMatcher implements IRuleMatcher {
 
-    @Override
-    public boolean contains(String ruleExpression, String testStr) {
-        return match(ruleExpression, testStr);
-    }
+  @Override
+  public boolean contains(String ruleExpression, String testStr) {
+    return match(ruleExpression, testStr);
+  }
 
-    @Override
-    public boolean matchAny(Collection<String> ruleExpressionList, String testStr) {
-        if (ruleExpressionList == null || ruleExpressionList.isEmpty()) {
-            return false;
-        }
-        for (String ruleExpression : ruleExpressionList) {
-            if (match(ruleExpression, testStr)) {
-                return true;
-            }
-        }
-        return false;
+  @Override
+  public boolean matchAny(Collection<String> ruleExpressionList, String testStr) {
+    if (ruleExpressionList == null || ruleExpressionList.isEmpty()) {
+      return false;
     }
-
-    @Override
-    public String matchAnyReturnFirst(Collection<String> ruleExpressionList, String testStr) {
-        if (ruleExpressionList == null || ruleExpressionList.isEmpty()) {
-            return null;
-        }
-        for (String ruleExpression : ruleExpressionList) {
-            if (match(ruleExpression, testStr)) {
-                return ruleExpression;
-            }
-        }
-        return null;
+    for (String ruleExpression : ruleExpressionList) {
+      if (match(ruleExpression, testStr)) {
+        return true;
+      }
     }
+    return false;
+  }
 
+  @Override
+  public String matchAnyReturnFirst(Collection<String> ruleExpressionList, String testStr) {
+    if (ruleExpressionList == null || ruleExpressionList.isEmpty()) {
+      return null;
+    }
+    for (String ruleExpression : ruleExpressionList) {
+      if (match(ruleExpression, testStr)) {
+        return ruleExpression;
+      }
+    }
+    return null;
+  }
 }

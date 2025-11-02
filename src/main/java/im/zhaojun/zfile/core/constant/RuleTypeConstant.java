@@ -7,12 +7,11 @@ package im.zhaojun.zfile.core.constant;
  */
 public class RuleTypeConstant {
 
-    public static final String IP = "ip";
+  public static final String IP = "ip";
 
-    public static final String REGEX = "regex";
+  public static final String REGEX = "regex";
 
-    public static final String ANT_PATH = "antPath";
+  public static final String ANT_PATH = "antPath";
 
-    public static final String SPRING_SIMPLE = "springSimple";
-
+  public static final String SPRING_SIMPLE = "springSimple";
 }

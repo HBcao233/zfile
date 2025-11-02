@@ -1,6 +1,5 @@
 package im.zhaojun.zfile.module.storage.model.param;
 
-import im.zhaojun.zfile.module.storage.annotation.StorageParamItem;
 import lombok.Getter;
 
 /**
@@ -9,6 +8,4 @@ import lombok.Getter;
  * @author zhaojun
  */
 @Getter
-public class AliyunParam extends S3BaseParam {
-
-}
+public class AliyunParam extends S3BaseParam {}

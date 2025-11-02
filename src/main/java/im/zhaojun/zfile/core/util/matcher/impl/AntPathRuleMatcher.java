@@ -13,20 +13,19 @@ import org.springframework.util.AntPathMatcher;
 @Slf4j
 public class AntPathRuleMatcher extends AbstractRuleMatcher {
 
-    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+  private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    @Override
-    public boolean match(String ruleExpression, String testStr) {
-        boolean match = pathMatcher.match(ruleExpression, testStr);
-        if (log.isDebugEnabled()) {
-            log.debug("Ant 表达式匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
-        }
-        return match;
+  @Override
+  public boolean match(String ruleExpression, String testStr) {
+    boolean match = pathMatcher.match(ruleExpression, testStr);
+    if (log.isDebugEnabled()) {
+      log.debug("Ant 表达式匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
     }
+    return match;
+  }
 
-    @Override
-    public String getRuleType() {
-        return RuleTypeConstant.ANT_PATH;
-    }
-
+  @Override
+  public String getRuleType() {
+    return RuleTypeConstant.ANT_PATH;
+  }
 }

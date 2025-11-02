@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 /**
@@ -15,11 +14,10 @@ import java.io.IOException;
  */
 public class JSONStringDeserializer extends JsonDeserializer<String> {
 
-    @Override
-    public String deserialize(JsonParser p, DeserializationContext context) throws IOException {
-        JsonNode node = p.getCodec().readTree(p);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(node);
-    }
-
+  @Override
+  public String deserialize(JsonParser p, DeserializationContext context) throws IOException {
+    JsonNode node = p.getCodec().readTree(p);
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.writeValueAsString(node);
+  }
 }

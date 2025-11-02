@@ -19,55 +19,54 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Knife4jConfiguration {
 
-    @Bean
-    public GroupedOpenApi groupedOpenApi() {
-        String groupName = "前台功能";
-        return GroupedOpenApi.builder()
-                .group(groupName)
-                .packagesToScan("im.zhaojun.zfile.module")
-                .pathsToExclude("/admin/**")
-                .build();
-    }
+  @Bean
+  public GroupedOpenApi groupedOpenApi() {
+    String groupName = "前台功能";
+    return GroupedOpenApi.builder()
+        .group(groupName)
+        .packagesToScan("im.zhaojun.zfile.module")
+        .pathsToExclude("/admin/**")
+        .build();
+  }
 
-    @Bean
-    public GroupedOpenApi groupedOpenApi2() {
-        String groupName = "管理员功能";
-        return GroupedOpenApi.builder()
-                .group(groupName)
-                .packagesToScan("im.zhaojun.zfile.module")
-                .pathsToMatch("/admin/**")
-                .addOperationCustomizer(globalOperationCustomizer())
-                .build();
-    }
+  @Bean
+  public GroupedOpenApi groupedOpenApi2() {
+    String groupName = "管理员功能";
+    return GroupedOpenApi.builder()
+        .group(groupName)
+        .packagesToScan("im.zhaojun.zfile.module")
+        .pathsToMatch("/admin/**")
+        .addOperationCustomizer(globalOperationCustomizer())
+        .build();
+  }
 
-    public OperationCustomizer globalOperationCustomizer() {
-        return (operation, handlerMethod) -> {
-            operation.addParametersItem(new HeaderParameter()
-                    .name("zfile-token")
-                    .description("token")
-                    .required(true)
-                    .schema(new StringSchema()));
-            return operation;
-        };
-    }
+  public OperationCustomizer globalOperationCustomizer() {
+    return (operation, handlerMethod) -> {
+      operation.addParametersItem(
+          new HeaderParameter()
+              .name("zfile-token")
+              .description("token")
+              .required(true)
+              .schema(new StringSchema()));
+      return operation;
+    };
+  }
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        Contact contact = new Contact();
-        contact.setName("zhaojun");
-        contact.setUrl("https://zfile.vip");
-        contact.setEmail("873019219@qq.com");
+  @Bean
+  public OpenAPI customOpenAPI() {
+    Contact contact = new Contact();
+    contact.setName("zhaojun");
+    contact.setUrl("https://zfile.vip");
+    contact.setEmail("873019219@qq.com");
 
-        return new OpenAPI()
-                .info(new Info()
-                        .title("ZFILE 文档")
-                        .description("# 这是 ZFILE Restful 接口文档展示页面")
-                        .termsOfService("https://www.zfile.vip")
-                        .contact(contact)
-                        .version("1.0")
-                        .license(new License()
-                                .name("Apache 2.0")
-                                .url("http://doc.xiaominfo.com")));
-    }
-
+    return new OpenAPI()
+        .info(
+            new Info()
+                .title("ZFILE 文档")
+                .description("# 这是 ZFILE Restful 接口文档展示页面")
+                .termsOfService("https://www.zfile.vip")
+                .contact(contact)
+                .version("1.0")
+                .license(new License().name("Apache 2.0").url("http://doc.xiaominfo.com")));
+  }
 }

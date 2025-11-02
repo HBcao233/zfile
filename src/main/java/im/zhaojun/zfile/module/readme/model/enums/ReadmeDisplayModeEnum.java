@@ -14,23 +14,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ReadmeDisplayModeEnum {
 
-	/**
-	 * 顶部显示
-	 */
-	TOP("top"),
+  /** 顶部显示 */
+  TOP("top"),
 
-	/**
-	 * 底部显示
-	 */
-	BOTTOM("bottom"),
+  /** 底部显示 */
+  BOTTOM("bottom"),
 
-	/**
-	 * 弹窗显示
-	 */
-	DIALOG("dialog");
+  /** 弹窗显示 */
+  DIALOG("dialog");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

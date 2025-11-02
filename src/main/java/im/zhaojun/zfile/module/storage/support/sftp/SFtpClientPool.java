@@ -7,11 +7,11 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 public class SFtpClientPool extends GenericObjectPool<Sftp> {
 
-    public SFtpClientPool(PooledObjectFactory<Sftp> factory) {
-        super(factory);
-    }
+  public SFtpClientPool(PooledObjectFactory<Sftp> factory) {
+    super(factory);
+  }
 
-    public SFtpClientPool(PooledObjectFactory<Sftp> factory, GenericObjectPoolConfig config) {
-        super(factory, config);
-    }
+  public SFtpClientPool(PooledObjectFactory<Sftp> factory, GenericObjectPoolConfig config) {
+    super(factory, config);
+  }
 }

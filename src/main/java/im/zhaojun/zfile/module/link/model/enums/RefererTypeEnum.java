@@ -14,23 +14,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RefererTypeEnum {
 
-	/**
-	 * 不启用 Referer 防盗链
-	 */
-	OFF("off"),
+  /** 不启用 Referer 防盗链 */
+  OFF("off"),
 
-	/**
-	 * 启用白名单模式
-	 */
-	WHITE_LIST("white_list"),
+  /** 启用白名单模式 */
+  WHITE_LIST("white_list"),
 
-	/**
-	 * 启用黑名单模式
-	 */
-	BLACK_LIST("black_list");
+  /** 启用黑名单模式 */
+  BLACK_LIST("black_list");
 
-	@EnumValue
-	@JsonValue
-	private final String value;
-
+  @EnumValue @JsonValue private final String value;
 }

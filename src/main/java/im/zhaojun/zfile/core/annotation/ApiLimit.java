@@ -15,19 +15,12 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiLimit {
 
-    /**
-     * 持续时间
-     */
-    int timeout();
+  /** 持续时间 */
+  int timeout();
 
-    /**
-     * 时间单位, 默认为秒
-     */
-    TimeUnit timeUnit() default TimeUnit.SECONDS;
+  /** 时间单位, 默认为秒 */
+  TimeUnit timeUnit() default TimeUnit.SECONDS;
 
-    /**
-     * 单位时间内允许访问的最大次数
-     */
-    long maxCount();
-
+  /** 单位时间内允许访问的最大次数 */
+  long maxCount();
 }

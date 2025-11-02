@@ -23,71 +23,65 @@ import org.springframework.stereotype.Service;
 @Service
 public class TwoFactorAuthenticatorVerifyService {
 
-	@Resource
-	private SecretGenerator secretGenerator;
+  @Resource private SecretGenerator secretGenerator;
 
-	@Resource
-	private QrDataFactory qrDataFactory;
+  @Resource private QrDataFactory qrDataFactory;
 
-	@Resource
-	private CodeVerifier verifier;
+  @Resource private CodeVerifier verifier;
 
-	@Resource
-	private SystemConfigService systemConfigService;
+  @Resource private SystemConfigService systemConfigService;
 
+  /**
+   * 生成 2FA 双因素认证二维码和密钥
+   *
+   * @return 2FA 双因素认证二维码和密钥
+   */
+  public LoginTwoFactorAuthenticatorResult setupDevice() {
+    // 生成 2FA 密钥
+    String secret = secretGenerator.generate();
 
-	/**
-	 * 生成 2FA 双因素认证二维码和密钥
-	 *
-	 * @return  2FA 双因素认证二维码和密钥
-     */
-	public LoginTwoFactorAuthenticatorResult setupDevice() {
-		// 生成 2FA 密钥
-		String secret = secretGenerator.generate();
+    // 将生成的 2FA 密钥转换为 Base64 图像字符串
+    User currentUser = ZFileAuthUtil.getCurrentUser();
+    QrData data =
+        qrDataFactory
+            .newBuilder()
+            .label("ZFile:" + currentUser.getUsername())
+            .secret(secret)
+            .issuer("ZFile")
+            .build();
 
-		// 将生成的 2FA 密钥转换为 Base64 图像字符串
-		User currentUser = ZFileAuthUtil.getCurrentUser();
-		QrData data = qrDataFactory.newBuilder().label("ZFile:" + currentUser.getUsername()).secret(secret).issuer("ZFile").build();
+    return new LoginTwoFactorAuthenticatorResult(data.getUri(), secret);
+  }
 
-		return new LoginTwoFactorAuthenticatorResult(data.getUri(), secret);
-	}
+  /**
+   * 验证 2FA 双因素认证是否正确，正确则进行绑定.
+   *
+   * @param verifyLoginTwoFactorAuthenticatorRequest 2FA 双因素认证请求参数
+   */
+  public void deviceVerify(
+      VerifyLoginTwoFactorAuthenticatorRequest verifyLoginTwoFactorAuthenticatorRequest) {
+    String secret = verifyLoginTwoFactorAuthenticatorRequest.getSecret();
+    String code = verifyLoginTwoFactorAuthenticatorRequest.getCode();
 
+    checkCode(secret, code);
 
-	/**
-	 * 验证 2FA 双因素认证是否正确，正确则进行绑定.
-	 *
-	 * @param   verifyLoginTwoFactorAuthenticatorRequest
-	 *          2FA 双因素认证请求参数
-	 */
-	public void deviceVerify(VerifyLoginTwoFactorAuthenticatorRequest verifyLoginTwoFactorAuthenticatorRequest) {
-		String secret = verifyLoginTwoFactorAuthenticatorRequest.getSecret();
-		String code = verifyLoginTwoFactorAuthenticatorRequest.getCode();
+    SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
+    //			systemConfig.setLoginVerifyMode(LoginVerifyModeEnum.TWO_FACTOR_AUTHENTICATION_MODE);
+    systemConfig.setAdminTwoFactorVerify(true);
+    systemConfig.setLoginVerifySecret(secret);
+    systemConfigService.updateSystemConfig(systemConfig);
+  }
 
-		checkCode(secret, code);
-
-		SystemConfigDTO systemConfig = systemConfigService.getSystemConfig();
-//			systemConfig.setLoginVerifyMode(LoginVerifyModeEnum.TWO_FACTOR_AUTHENTICATION_MODE);
-		systemConfig.setAdminTwoFactorVerify(true);
-		systemConfig.setLoginVerifySecret(secret);
-		systemConfigService.updateSystemConfig(systemConfig);
-	}
-
-
-	/**
-	 * 验证 2FA 双因素认证.
-	 *
-	 * @param   loginVerifySecret
-	 *          2FA 双因素认证密钥
-	 *
-	 * @param   verifyCode
-	 *          2FA 双因素认证验证码
-	 *
-	 * @throws 	ForbiddenAccessException 	2FA 双因素认证失败会抛出此异常
-	 */
-	public void checkCode(String loginVerifySecret, String verifyCode) {
-		if (!verifier.isValidCode(loginVerifySecret, verifyCode)) {
-			throw new ForbiddenAccessException(ErrorCode.BIZ_2FA_CODE_ERROR);
-		}
-	}
-
+  /**
+   * 验证 2FA 双因素认证.
+   *
+   * @param loginVerifySecret 2FA 双因素认证密钥
+   * @param verifyCode 2FA 双因素认证验证码
+   * @throws ForbiddenAccessException 2FA 双因素认证失败会抛出此异常
+   */
+  public void checkCode(String loginVerifySecret, String verifyCode) {
+    if (!verifier.isValidCode(loginVerifySecret, verifyCode)) {
+      throw new ForbiddenAccessException(ErrorCode.BIZ_2FA_CODE_ERROR);
+    }
+  }
 }

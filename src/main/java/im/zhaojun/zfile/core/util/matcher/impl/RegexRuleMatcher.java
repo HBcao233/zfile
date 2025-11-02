@@ -13,27 +13,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RegexRuleMatcher extends AbstractRuleMatcher {
 
-    @Override
-    public boolean match(String ruleExpression, String testStr) {
-        boolean match = ReUtil.isMatch(ruleExpression, testStr);
-        if (log.isDebugEnabled()) {
-            log.debug("正则匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
-        }
-        return match;
+  @Override
+  public boolean match(String ruleExpression, String testStr) {
+    boolean match = ReUtil.isMatch(ruleExpression, testStr);
+    if (log.isDebugEnabled()) {
+      log.debug("正则匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
     }
+    return match;
+  }
 
-    @Override
-    public boolean contains(String ruleExpression, String testStr) {
-        boolean match = ReUtil.contains(ruleExpression, testStr);
-        if (log.isDebugEnabled()) {
-            log.debug("正则部分匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
-        }
-        return match;
+  @Override
+  public boolean contains(String ruleExpression, String testStr) {
+    boolean match = ReUtil.contains(ruleExpression, testStr);
+    if (log.isDebugEnabled()) {
+      log.debug("正则部分匹配结果: {}, 规则表达式: {}, 测试值: {}", match, ruleExpression, testStr);
     }
+    return match;
+  }
 
-    @Override
-    public String getRuleType() {
-        return RuleTypeConstant.REGEX;
-    }
-
+  @Override
+  public String getRuleType() {
+    return RuleTypeConstant.REGEX;
+  }
 }

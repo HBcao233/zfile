@@ -1,18 +1,16 @@
 package im.zhaojun.zfile.module.link.model.dto;
 
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class CacheInfo<K, V> {
 
-    private K key;
+  private K key;
 
-    private V value;
+  private V value;
 
-    private Date expiredTime;
+  private Date expiredTime;
 
-    private Long ttl;
-
+  private Long ttl;
 }
